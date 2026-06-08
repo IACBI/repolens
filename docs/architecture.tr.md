@@ -1,14 +1,13 @@
-# Mimari
+# Mimari / Architecture
 
-[English](architecture.md) | [Türkçe](architecture.tr.md)
+İstediğiniz bölümü açarak bu sayfadan ayrılmadan dil değiştirebilirsiniz.
 
-RepoLens üç ayrı sorumluluk etrafında düzenlenmiştir:
+<details open>
+<summary><strong>Türkçe</strong></summary>
 
-- dosya tarama
-- depo yapısı ve bağımlılık analizi
-- Markdown çıktı üretimi
+RepoLens tarama, analiz ve Markdown üretimini ayrı tutar.
 
-## Ana Kaynak Alanları
+## Ana Alanlar
 
 - `src/cli.ts`: Commander tabanlı CLI bağlantısı.
 - `src/config`: varsayılan yapılandırma ve config yükleme.
@@ -28,10 +27,31 @@ RepoLens üç ayrı sorumluluk etrafında düzenlenmiştir:
 4. Dokümantasyon sağlık kontrolleri yapılandırılmış Markdown dosyalarını inceler.
 5. Generatorlar deterministik Markdown çıktısı yazar.
 
-## Tasarım Kısıtları
+</details>
 
-- Varsayılan olarak harici API çağrısı yoktur.
-- Veritabanı yoktur.
-- Web paneli yoktur.
-- Tarama, analiz ve Markdown üretimi ayrı tutulur.
-- Testlerin ve üretilen dokümanların stabil kalması için deterministik çıktı tercih edilir.
+<details>
+<summary><strong>English</strong></summary>
+
+RepoLens separates scanning, analysis, and Markdown generation.
+
+## Main Areas
+
+- `src/cli.ts`: Commander-based CLI wiring.
+- `src/config`: default config and config loading.
+- `src/scanner`: file discovery and filtering.
+- `src/analyzers`: language-specific parsing and repository analysis.
+- `src/docs`: documentation health checks and Markdown generation.
+- `src/graph`: graph utility functions.
+- `src/ai`: optional provider abstraction, disabled by default.
+- `src/types`: shared TypeScript types.
+- `src/utils`: path and file helpers.
+
+## Data Flow
+
+1. The CLI loads configuration.
+2. The scanner discovers eligible local text files.
+3. The analyzer detects project type, scripts, entry points, modules, and dependencies.
+4. Documentation health checks inspect configured Markdown files.
+5. Generators write deterministic Markdown output.
+
+</details>

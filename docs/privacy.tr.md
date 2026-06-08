@@ -1,18 +1,15 @@
-# Gizlilik
+# Gizlilik / Privacy
 
-[English](privacy.md) | [Türkçe](privacy.tr.md)
+İstediğiniz bölümü açarak bu sayfadan ayrılmadan dil değiştirebilirsiniz.
+
+<details open>
+<summary><strong>Türkçe</strong></summary>
 
 RepoLens tasarım gereği local-first çalışır.
 
-## RepoLens Ne Okur?
+Yapılandırmadaki include/exclude kurallarıyla seçilen yerel dosyaları okur ve yaygın generated, dependency, build, coverage, vendor ve binary dosyaları atlar.
 
-RepoLens, yapılandırmadaki include/exclude kurallarıyla seçilen yerel dosyaları okur. Yaygın generated, dependency, build, coverage, vendor ve binary dosyaları atlar.
-
-## RepoLens Ne Yazar?
-
-RepoLens Markdown dokümantasyonu yapılandırılmış çıktı dizinine yazar. Varsayılan çıktı dizini `.repolens/output` şeklindedir.
-
-## Harici Servisler
+Markdown dokümantasyonu yapılandırılmış çıktı dizinine yazar. Varsayılan çıktı dizini `.repolens/output` şeklindedir.
 
 MVP harici AI API, barındırılan servis veya veritabanı çağırmaz. Varsayılan AI provider ayarı kapalıdır:
 
@@ -25,6 +22,30 @@ MVP harici AI API, barındırılan servis veya veritabanı çağırmaz. Varsayı
 }
 ```
 
-## Özel Depolar
+Üretilen Markdown dosyalarını yayınlamadan önce inceleyin; dosya yolları ve bağımlılık adları içerebilir.
 
-Analiz varsayılan olarak yerelde gerçekleştiği için RepoLens özel depolarda çalıştırılmaya uygundur. Üretilen Markdown dosyalarını yayınlamadan önce inceleyin; dosya yolları ve bağımlılık adları içerebilir.
+</details>
+
+<details>
+<summary><strong>English</strong></summary>
+
+RepoLens is local-first by design.
+
+It reads local files selected by the config include/exclude rules and skips common generated, dependency, build, coverage, vendor, and binary files.
+
+It writes Markdown documentation to the configured output directory. The default output directory is `.repolens/output`.
+
+The MVP does not call external AI APIs, hosted services, or databases. The default AI provider setting is disabled:
+
+```json
+{
+  "ai": {
+    "enabled": false,
+    "provider": "none"
+  }
+}
+```
+
+Review generated Markdown before publishing it, because it may include file paths and dependency names from your repository.
+
+</details>

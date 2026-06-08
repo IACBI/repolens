@@ -1,29 +1,33 @@
-# Üretilen Dokümanlar
+# Üretilen Dokümanlar / Generated Docs
 
-[English](generated-docs.md) | [Türkçe](generated-docs.tr.md)
+İstediğiniz bölümü açarak bu sayfadan ayrılmadan dil değiştirebilirsiniz.
 
-`scan` beş Markdown dosyası yazar.
+<details open>
+<summary><strong>Türkçe</strong></summary>
 
-## `ARCHITECTURE.md`
+`scan` beş Markdown dosyası yazar:
 
-Proje türü, teknolojiler, klasör yapısı, giriş noktaları, runtime ipuçları, Mermaid modül diyagramı, riskler, bilinmeyenler ve kanıtları özetler.
-
-## `MODULES.md`
-
-Algılanan modülleri olası sorumluluk, önemli dosyalar, iç bağımlılıklar, dış bağımlılıklar, güven seviyesi ve kanıtlarla listeler.
-
-## `ONBOARDING.md`
-
-Bağımlılık kurulum ipuçları, çalıştırma komutları, test komutları, okunacak ilk dosyalar, ilk katkı alanları ve yaygın package scriptlerini sağlar.
-
-## `DEPENDENCY_MAP.md`
-
-İç bağımlılık kenarlarını, dış paket kullanımını, Mermaid bağımlılık diyagramlarını ve olası coupling noktalarını gösterir.
-
-## `DOCS_HEALTH.md`
-
-Bulunan dokümantasyon dosyalarını, kırık dosya veya dizin referanslarını, mevcut olmayan dokümante package scriptlerini, eksik önerilen dokümanları ve düzeltme önerilerini raporlar.
-
-## Doğruluk Modeli
+- `ARCHITECTURE.md`: proje türü, teknolojiler, klasör yapısı, giriş noktaları, runtime ipuçları, Mermaid modül diyagramı, riskler, bilinmeyenler ve kanıtlar.
+- `MODULES.md`: algılanan modüller, olası sorumluluk, önemli dosyalar, bağımlılıklar, güven seviyesi ve kanıtlar.
+- `ONBOARDING.md`: bağımlılık kurulum ipuçları, çalıştırma komutları, test komutları, okunacak ilk dosyalar, ilk katkı alanları ve yaygın scriptler.
+- `DEPENDENCY_MAP.md`: iç bağımlılık kenarları, dış paket kullanımı, Mermaid diyagramları ve olası coupling noktaları.
+- `DOCS_HEALTH.md`: bulunan dokümantasyon dosyaları, kırık referanslar, mevcut olmayan dokümante scriptler, eksik önerilen dokümanlar ve düzeltme önerileri.
 
 Üretilen dokümanlar statik kaynak kanıtına dayanır. RepoLens temkinli dil kullanır ve kanıt dosyalarını listeler; çünkü kodda görünmeyen iş niyetini bilemez.
+
+</details>
+
+<details>
+<summary><strong>English</strong></summary>
+
+`scan` writes five Markdown files:
+
+- `ARCHITECTURE.md`: project type, technologies, folder structure, entry points, runtime clues, Mermaid module diagram, risks, unknowns, and evidence.
+- `MODULES.md`: detected modules with likely responsibility, important files, dependencies, confidence, and evidence.
+- `ONBOARDING.md`: dependency installation hints, run commands, test commands, first files to read, first contribution areas, and common scripts.
+- `DEPENDENCY_MAP.md`: internal dependency edges, external package usage, Mermaid diagrams, and possible coupling hotspots.
+- `DOCS_HEALTH.md`: documentation files found, broken references, documented scripts that do not exist, missing recommended docs, and suggested fixes.
+
+Generated docs are based on static source evidence. RepoLens uses cautious language and lists evidence files because it cannot know business intent that is not visible in code.
+
+</details>

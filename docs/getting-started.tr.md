@@ -1,6 +1,9 @@
-# Başlangıç
+# Başlangıç / Getting Started
 
-[English](getting-started.md) | [Türkçe](getting-started.tr.md)
+İstediğiniz bölümü açarak bu sayfadan ayrılmadan dil değiştirebilirsiniz.
+
+<details open>
+<summary><strong>Türkçe</strong></summary>
 
 RepoLens bugün kaynaktan çalışır. Node.js 20 veya üzeri gerekir; paket yöneticisi olarak `pnpm` kullanılır.
 
@@ -14,34 +17,43 @@ pnpm test
 
 ## İlk Çalıştırma
 
-Depo özeti yazdırın:
-
 ```bash
 pnpm dev -- summary
-```
-
-Yapılandırma dosyası oluşturun:
-
-```bash
 pnpm dev -- init
-```
-
-Markdown dokümantasyon üretin:
-
-```bash
 pnpm dev -- scan
-```
-
-Dokümantasyon güncelliğini kontrol edin:
-
-```bash
 pnpm dev -- check-docs
 ```
 
-## Çıktı
-
-Varsayılan olarak üretilen dokümantasyon yapılandırılmış çıktı dizinine yazılır. Varsayılan çıktı dizini `.repolens/output` şeklindedir.
-
-## Notlar
+Varsayılan olarak üretilen dokümantasyon `.repolens/output` dizinine yazılır.
 
 RepoLens varsayılan olarak yerel statik analiz yapar. Veritabanı, barındırılan servis veya harici AI API gerektirmez.
+
+</details>
+
+<details>
+<summary><strong>English</strong></summary>
+
+RepoLens runs from source today. It requires Node.js 20 or newer and the `pnpm` package manager.
+
+## Setup
+
+```bash
+pnpm install
+pnpm build
+pnpm test
+```
+
+## First Run
+
+```bash
+pnpm dev -- summary
+pnpm dev -- init
+pnpm dev -- scan
+pnpm dev -- check-docs
+```
+
+By default, generated documentation is written to `.repolens/output`.
+
+RepoLens performs local static analysis by default. It does not require a database, hosted service, or external AI API.
+
+</details>

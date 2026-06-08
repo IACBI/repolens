@@ -1,54 +1,51 @@
-# CLI Referansı
+# CLI Referansı / CLI Reference
 
-[English](cli.md) | [Türkçe](cli.tr.md)
+İstediğiniz bölümü açarak bu sayfadan ayrılmadan dil değiştirebilirsiniz.
 
-RepoLens dört komut sağlar.
+<details open>
+<summary><strong>Türkçe</strong></summary>
 
-## `init`
+RepoLens dört komut sağlar:
 
-Geçerli çalışma dizininde yoksa `.repolensrc.json` oluşturur.
+- `init`: yoksa `.repolensrc.json` oluşturur.
+- `summary`: taranan dosyaları, dilleri, paket yöneticilerini, giriş noktalarını, modülleri ve docs-health sayısını yazdırır.
+- `scan`: üretilen Markdown dokümantasyonu yazar.
+- `check-docs`: mevcut dokümanlarda eski dosya referanslarını ve eksik package scriptlerini kontrol eder.
+
+## Kullanım
 
 ```bash
 pnpm dev -- init
-```
-
-## `summary`
-
-Geçerli depoyu tarar ve kısa bir terminal özeti yazdırır:
-
-- taranan dosya sayısı
-- algılanan diller
-- algılanan paket yöneticileri
-- giriş noktaları
-- üst seviye modüller
-- dokümantasyon sağlık sorunu sayısı
-
-```bash
 pnpm dev -- summary
-```
-
-## `scan`
-
-Geçerli depoyu tarar ve Markdown dokümantasyon yazar.
-
-```bash
+pnpm dev -- check-docs
 pnpm dev -- scan
-```
-
-Özel çıktı dizini kullanın:
-
-```bash
 pnpm dev -- scan --out docs/repolens
 ```
 
-## `check-docs`
+`pnpm build` sonrasında derlenmiş CLI giriş noktası `dist/cli.js` dosyasıdır. Paket bin alanı `repolens` olarak yapılandırılmıştır.
 
-Mevcut Markdown dokümantasyonunda eski referansları ve dokümante edildiği halde mevcut olmayan package scriptlerini kontrol eder.
+</details>
+
+<details>
+<summary><strong>English</strong></summary>
+
+RepoLens exposes four commands:
+
+- `init`: creates `.repolensrc.json` if it does not exist.
+- `summary`: prints scanned files, languages, package managers, entry points, modules, and docs-health count.
+- `scan`: writes generated Markdown documentation.
+- `check-docs`: checks existing docs for stale file references and missing package scripts.
+
+## Usage
 
 ```bash
+pnpm dev -- init
+pnpm dev -- summary
 pnpm dev -- check-docs
+pnpm dev -- scan
+pnpm dev -- scan --out docs/repolens
 ```
 
-## Derlenmiş Binary
+After `pnpm build`, the compiled CLI entry point is `dist/cli.js`. The package bin is configured as `repolens`.
 
-`pnpm build` sonrasında derlenmiş CLI giriş noktası `dist/cli.js` dosyasıdır. Paket bin alanı `repolens` olarak yapılandırılmıştır.
+</details>

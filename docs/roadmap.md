@@ -1,6 +1,9 @@
-# Roadmap
+# Roadmap / Yol Haritası
 
-[English](roadmap.md) | [Türkçe](roadmap.tr.md)
+Switch language on this page by opening the section you want.
+
+<details open>
+<summary><strong>English</strong></summary>
 
 RepoLens should stay focused on local-first repository understanding.
 
@@ -26,3 +29,35 @@ RepoLens should stay focused on local-first repository understanding.
 - External AI calls by default
 - Embeddings or vector databases
 - Editor extensions
+
+</details>
+
+<details>
+<summary><strong>Türkçe</strong></summary>
+
+RepoLens local-first depo anlama odağını korumalıdır.
+
+## Yakın Dönem
+
+- JavaScript/TypeScript import analizini iyileştirmek.
+- Dokümantasyon sağlık kontrolleri için daha fazla edge-case testi eklemek.
+- Monorepo modül algılamasını iyileştirmek.
+- Dokümantasyon sağlığı için daha katı CI seçenekleri eklemek.
+
+## Daha Sonra
+
+- Açık yapılandırma arkasında opt-in provider entegrasyonları eklemek.
+- Go ve Rust bağımlılık algılamasını iyileştirmek.
+- Daha zengin çıktı özelleştirmesi eklemek.
+- Proje host edildikten sonra release otomasyonu eklemek.
+
+## MVP Kapsamı Dışında
+
+- Web paneli
+- Kimlik doğrulama
+- Cloud sync
+- Varsayılan harici AI çağrıları
+- Embedding veya vector database
+- Editör eklentileri
+
+</details>

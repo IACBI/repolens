@@ -1,10 +1,11 @@
-# Configuration
+# Configuration / Yapılandırma
 
-[English](configuration.md) | [Türkçe](configuration.tr.md)
+Switch language on this page by opening the section you want.
+
+<details open>
+<summary><strong>English</strong></summary>
 
 RepoLens reads `.repolensrc.json` from the current working directory. Missing fields fall back to defaults.
-
-## Default Config
 
 ```json
 {
@@ -20,16 +21,45 @@ RepoLens reads `.repolensrc.json` from the current working directory. Missing fi
 }
 ```
 
-## Fields
-
-- `include`: directories RepoLens scans for source files.
-- `exclude`: directories RepoLens skips.
+- `include`: directories scanned for source files.
+- `exclude`: directories skipped during scanning.
 - `outputDir`: where generated Markdown files are written.
-- `maxFileSizeKb`: maximum text file size scanned.
+- `maxFileSizeKb`: largest text file size scanned.
 - `docs`: Markdown files checked by documentation health analysis.
 - `ai.enabled`: controls future provider usage. Defaults to `false`.
-- `ai.provider`: provider name. The default is `none`.
+- `ai.provider`: provider name. Defaults to `none`.
 
-## AI Provider Setting
+The MVP does not call external AI APIs.
 
-The MVP does not call external AI APIs. `NullProvider` is selected by default. `LocalHeuristicProvider` is available as a deterministic local provider for future extension and tests.
+</details>
+
+<details>
+<summary><strong>Türkçe</strong></summary>
+
+RepoLens geçerli çalışma dizinindeki `.repolensrc.json` dosyasını okur. Eksik alanlar varsayılanlara döner.
+
+```json
+{
+  "include": ["src", "apps", "packages", "services", "lib", "components", "pages", "app"],
+  "exclude": ["node_modules", ".git", "dist", "build", "coverage", ".next", "vendor"],
+  "outputDir": ".repolens/output",
+  "maxFileSizeKb": 300,
+  "docs": ["README.md", "docs/**/*.md"],
+  "ai": {
+    "enabled": false,
+    "provider": "none"
+  }
+}
+```
+
+- `include`: kaynak dosyalar için taranan dizinler.
+- `exclude`: tarama sırasında atlanan dizinler.
+- `outputDir`: üretilen Markdown dosyalarının yazıldığı yer.
+- `maxFileSizeKb`: taranacak en büyük metin dosyası boyutu.
+- `docs`: dokümantasyon sağlık analizinde kontrol edilen Markdown dosyaları.
+- `ai.enabled`: gelecekteki provider kullanımını kontrol eder. Varsayılan `false`.
+- `ai.provider`: provider adı. Varsayılan `none`.
+
+MVP harici AI API çağırmaz.
+
+</details>

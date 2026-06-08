@@ -1,14 +1,13 @@
-# Architecture
+# Architecture / Mimari
 
-[English](architecture.md) | [Türkçe](architecture.tr.md)
+Switch language on this page by opening the section you want.
 
-RepoLens is organized around three separate concerns:
+<details open>
+<summary><strong>English</strong></summary>
 
-- scanning files
-- analyzing repository structure and dependencies
-- generating Markdown output
+RepoLens separates scanning, analysis, and Markdown generation.
 
-## Main Source Areas
+## Main Areas
 
 - `src/cli.ts`: Commander-based CLI wiring.
 - `src/config`: default config and config loading.
@@ -28,10 +27,31 @@ RepoLens is organized around three separate concerns:
 4. Documentation health checks inspect configured Markdown files.
 5. Generators write deterministic Markdown output.
 
-## Design Constraints
+</details>
 
-- No external API calls by default.
-- No database.
-- No web dashboard.
-- Keep scanning, analysis, and Markdown generation separate.
-- Prefer deterministic output so tests and generated docs remain stable.
+<details>
+<summary><strong>Türkçe</strong></summary>
+
+RepoLens tarama, analiz ve Markdown üretimini ayrı tutar.
+
+## Ana Alanlar
+
+- `src/cli.ts`: Commander tabanlı CLI bağlantısı.
+- `src/config`: varsayılan yapılandırma ve config yükleme.
+- `src/scanner`: dosya keşfi ve filtreleme.
+- `src/analyzers`: dile özel ayrıştırma ve depo analizi.
+- `src/docs`: dokümantasyon sağlık kontrolleri ve Markdown üretimi.
+- `src/graph`: grafik yardımcı fonksiyonları.
+- `src/ai`: varsayılan olarak kapalı opsiyonel provider soyutlaması.
+- `src/types`: ortak TypeScript tipleri.
+- `src/utils`: path ve dosya yardımcıları.
+
+## Veri Akışı
+
+1. CLI yapılandırmayı yükler.
+2. Scanner uygun yerel metin dosyalarını keşfeder.
+3. Analyzer proje türünü, scriptleri, giriş noktalarını, modülleri ve bağımlılıkları algılar.
+4. Dokümantasyon sağlık kontrolleri yapılandırılmış Markdown dosyalarını inceler.
+5. Generatorlar deterministik Markdown çıktısı yazar.
+
+</details>
