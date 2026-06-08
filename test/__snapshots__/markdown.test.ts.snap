@@ -1,0 +1,195 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`markdown generation > generates deterministic markdown snapshots 1`] = `
+{
+  "architecture": "# Architecture Overview
+
+This document is generated from repository structure and static source-file evidence. Inferred responsibilities are intentionally cautious.
+
+## Project Type
+
+- node
+
+## Main Technologies
+
+- typescript: 3 file(s)
+- json: 1 file(s)
+- markdown: 1 file(s)
+- yaml: 1 file(s)
+- Package manager: pnpm
+
+## High-Level Folder Structure
+
+- src - Likely typescript code grouped under src.
+- src/config - Likely configuration loading and defaults.
+- src/lib - Likely typescript code grouped under src/lib.
+
+## Main Entry Points
+
+- package script: build (package.json): \`tsc\`
+- package script: dev (package.json): \`tsx src/index.ts\`
+- package script: test (package.json): \`vitest run\`
+- Node/JavaScript index entry point: src/index.ts
+
+## Runtime and Deployment Clues
+
+- package.json script \`build\`: \`tsc\`
+- package.json script \`dev\`: \`tsx src/index.ts\`
+- package.json script \`test\`: \`vitest run\`
+
+## Module Diagram
+
+\`\`\`mermaid
+flowchart TD
+  repo["Repository"]
+  classDef high fill:#e8f5e9,stroke:#2e7d32,color:#111;
+  classDef medium fill:#fff8e1,stroke:#f9a825,color:#111;
+  classDef low fill:#ffebee,stroke:#c62828,color:#111;
+  n_module_src["src<br/>medium confidence"]
+  repo --> n_module_src
+  class n_module_src medium;
+  n_module_src_config["src/config<br/>medium confidence"]
+  repo --> n_module_src_config
+  class n_module_src_config medium;
+  n_module_src_lib["src/lib<br/>low confidence"]
+  repo --> n_module_src_lib
+  class n_module_src_lib low;
+  n_module_src --> n_module_src_lib
+\`\`\`
+
+## Risks or Unknowns
+
+- Some module responsibilities are low-confidence because there are few clear entry files.
+- Documentation health checks found warnings that should be reviewed.
+
+## Evidence
+
+- package.json
+- src/config/load.ts
+- src/index.ts
+- src/lib/math.ts",
+  "dependencyMap": "# Dependency Map
+
+This map is based on static import/use detection. It may miss dynamic imports or framework-specific dependency wiring.
+
+## Internal Dependency Graph
+
+| From | To | Evidence |
+| --- | --- | --- |
+| src | src/lib | src/index.ts |
+
+## Mermaid Graph
+
+\`\`\`mermaid
+flowchart LR
+  classDef module fill:#e3f2fd,stroke:#1565c0,color:#111;
+  classDef external fill:#f3e5f5,stroke:#6a1b9a,color:#111,stroke-dasharray: 4 3;
+  n_module_src["src"]
+  class n_module_src module;
+  n_module_src_config["src/config"]
+  class n_module_src_config module;
+  n_module_src_lib["src/lib"]
+  class n_module_src_lib module;
+  n_external_fast_glob["fast-glob"]
+  class n_external_fast_glob external;
+  n_module_src -.-> n_external_fast_glob
+  n_module_src --> n_module_src_lib
+\`\`\`
+
+## External Package Summary
+
+| Package | Used By | Evidence |
+| --- | --- | --- |
+| fast-glob | src | src/index.ts |
+
+## Possible Coupling Hotspots
+
+- None detected.
+
+## Evidence
+
+- src/index.ts",
+  "docsHealth": "# Documentation Health
+
+This report checks Markdown documentation against repository files and detected package scripts.
+
+## Existing Documentation Files
+
+- README.md
+
+## Broken File or Directory References
+
+- No broken file or directory references were detected.
+
+## Commands Mentioned But Not Detected
+
+- No missing package scripts were detected.
+
+## Missing Recommended Docs
+
+- LICENSE
+- CONTRIBUTING.md
+
+## Suggested Documentation Fixes
+
+- Recommended documentation file is missing: CONTRIBUTING.md
+- Recommended documentation file is missing: LICENSE",
+  "modules": "# Modules
+
+This document summarizes top-level modules inferred from repository layout and static imports.
+
+| Module | Path | Likely Responsibility | Important Files | Internal Dependencies | External Dependencies | Confidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| src | src | Likely typescript code grouped under src. | src/index.ts | src/lib | fast-glob | medium |
+| config | src/config | Likely configuration loading and defaults. | src/config/load.ts | None detected | None detected | medium |
+| lib | src/lib | Likely typescript code grouped under src/lib. | src/lib/math.ts | None detected | None detected | low |
+
+## Evidence
+
+- src/config/load.ts
+- src/index.ts
+- src/lib/math.ts",
+  "onboarding": "# Onboarding Guide
+
+This guide is generated from detected manifests, scripts, entry points, and repository structure.
+
+## Install Dependencies
+
+- \`pnpm install\`
+
+## Run the Project
+
+- \`pnpm dev\`
+
+## Run Tests
+
+- \`pnpm test\`
+
+## First 5 Files to Read
+
+- README.md
+- package.json
+- src/index.ts
+- src/config/load.ts
+- src/lib/math.ts
+
+## Suggested First Contribution Areas
+
+- Review and fix documentation health warnings.
+- Add or improve documentation around \`src/lib\`.
+
+## Common Commands
+
+- build: \`tsc\`
+- dev: \`tsx src/index.ts\`
+- test: \`vitest run\`
+
+## Evidence
+
+- package.json
+- README.md
+- src/config/load.ts
+- src/index.ts
+- src/lib/math.ts",
+}
+`;

@@ -1,0 +1,13 @@
+import type { RepoLensConfig } from "../types/index.js";
+
+export const defaultConfig: RepoLensConfig = {
+  include: ["src", "apps", "packages", "services", "lib", "components", "pages", "app"],
+  exclude: ["node_modules", ".git", "dist", "build", "coverage", ".next", "vendor"],
+  outputDir: ".repolens/output",
+  maxFileSizeKb: 300,
+  docs: ["README.md", "docs/**/*.md"],
+  ai: {
+    enabled: false,
+    provider: "none"
+  }
+};

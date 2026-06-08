@@ -1,0 +1,12 @@
+{
+  "name": "node-sample",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.2"
+  }
+}

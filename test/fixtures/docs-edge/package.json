@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "test": "vitest run"
+  }
+}

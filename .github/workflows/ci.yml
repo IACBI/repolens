@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Node.js 20 and pnpm
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.30.3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck if configured
+        run: node -e "const { scripts = {} } = require('./package.json'); if (scripts.typecheck) require('child_process').execSync('pnpm typecheck', { stdio: 'inherit' }); else console.log('No typecheck script configured; skipping.');"
+
+      - name: Lint if configured
+        run: node -e "const { scripts = {} } = require('./package.json'); if (scripts.lint) require('child_process').execSync('pnpm lint', { stdio: 'inherit' }); else console.log('No lint script configured; skipping.');"
+
+      - name: Build
+        run: pnpm build
+
+      - name: Test
+        run: pnpm test

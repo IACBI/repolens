@@ -1,0 +1,17 @@
+name: Question
+description: Ask a usage or project question.
+title: "[Question]: "
+labels:
+  - question
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Include commands, output, and repository details that are safe to share.
