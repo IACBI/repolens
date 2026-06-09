@@ -1,9 +1,12 @@
 # Roadmap / Yol Haritası
 
-Switch language on this page by opening the section you want.
+<p align="center">
+  <a href="#english">English</a> | <a href="#türkçe">Türkçe</a>
+</p>
 
-<details open>
-<summary><strong>English</strong></summary>
+---
+
+## English
 
 RepoLens should stay focused on local-first repository understanding.
 
@@ -30,10 +33,9 @@ RepoLens should stay focused on local-first repository understanding.
 - Embeddings or vector databases
 - Editor extensions
 
-</details>
+---
 
-<details>
-<summary><strong>Türkçe</strong></summary>
+## Türkçe
 
 RepoLens local-first depo anlama odağını korumalıdır.
 
@@ -59,5 +61,3 @@ RepoLens local-first depo anlama odağını korumalıdır.
 - Varsayılan harici AI çağrıları
 - Embedding veya vector database
 - Editör eklentileri
-
-</details>

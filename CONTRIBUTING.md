@@ -1,9 +1,12 @@
 # Contributing / Katkı
 
-Switch language on this page by opening the section you want.
+<p align="center">
+  <a href="#english">English</a> | <a href="#türkçe">Türkçe</a>
+</p>
 
-<details open>
-<summary><strong>English</strong></summary>
+---
+
+## English
 
 Thank you for considering a contribution. RepoLens is a local-first developer tool, so changes should preserve privacy, determinism, and practical usefulness.
 
@@ -44,10 +47,9 @@ pnpm test
 
 If you change generated Markdown behavior, run RepoLens against this repository and review the generated output.
 
-</details>
+---
 
-<details>
-<summary><strong>Türkçe</strong></summary>
+## Türkçe
 
 Katkı düşünceniz için teşekkürler. RepoLens local-first bir geliştirici aracıdır; değişiklikler gizliliği, determinizmi ve pratik faydayı korumalıdır.
 
@@ -87,5 +89,3 @@ pnpm test
 ```
 
 Üretilen Markdown davranışını değiştirdiyseniz RepoLens'i bu depo üzerinde çalıştırın ve çıktıyı inceleyin.
-
-</details>

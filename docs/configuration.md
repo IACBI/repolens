@@ -1,9 +1,12 @@
 # Configuration / Yapılandırma
 
-Switch language on this page by opening the section you want.
+<p align="center">
+  <a href="#english">English</a> | <a href="#türkçe">Türkçe</a>
+</p>
 
-<details open>
-<summary><strong>English</strong></summary>
+---
+
+## English
 
 RepoLens reads `.repolensrc.json` from the current working directory. Missing fields fall back to defaults.
 
@@ -31,10 +34,9 @@ RepoLens reads `.repolensrc.json` from the current working directory. Missing fi
 
 The MVP does not call external AI APIs.
 
-</details>
+---
 
-<details>
-<summary><strong>Türkçe</strong></summary>
+## Türkçe
 
 RepoLens geçerli çalışma dizinindeki `.repolensrc.json` dosyasını okur. Eksik alanlar varsayılanlara döner.
 
@@ -61,5 +63,3 @@ RepoLens geçerli çalışma dizinindeki `.repolensrc.json` dosyasını okur. Ek
 - `ai.provider`: provider adı. Varsayılan `none`.
 
 MVP harici AI API çağırmaz.
-
-</details>

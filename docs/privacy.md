@@ -1,9 +1,12 @@
 # Privacy / Gizlilik
 
-Switch language on this page by opening the section you want.
+<p align="center">
+  <a href="#english">English</a> | <a href="#türkçe">Türkçe</a>
+</p>
 
-<details open>
-<summary><strong>English</strong></summary>
+---
+
+## English
 
 RepoLens is local-first by design.
 
@@ -24,10 +27,9 @@ The MVP does not call external AI APIs, hosted services, or databases. The defau
 
 Review generated Markdown before publishing it, because it may include file paths and dependency names from your repository.
 
-</details>
+---
 
-<details>
-<summary><strong>Türkçe</strong></summary>
+## Türkçe
 
 RepoLens tasarım gereği local-first çalışır.
 
@@ -47,5 +49,3 @@ MVP harici AI API, barındırılan servis veya veritabanı çağırmaz. Varsayı
 ```
 
 Üretilen Markdown dosyalarını yayınlamadan önce inceleyin; dosya yolları ve bağımlılık adları içerebilir.
-
-</details>

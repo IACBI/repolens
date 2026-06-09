@@ -1,26 +1,31 @@
 # RepoLens
 
-Bulunduğunuz sayfadan ayrılmadan dil değiştirmek için aşağıdaki bölümleri kullanın.
+<p align="center">
+  <strong>Depoları yaşayan dokümantasyona dönüştüren local-first CLI aracı.</strong>
+</p>
 
-<details open>
-<summary><strong>Türkçe</strong></summary>
+<p align="center">
+  <a href="#türkçe">Türkçe</a> | <a href="#english">English</a>
+</p>
 
-RepoLens, depoları yaşayan dokümantasyona dönüştüren local-first bir CLI aracıdır.
+---
 
-Kod tabanını yerel makinenizde analiz eder ve mimari, modüller, onboarding, bağımlılık haritası ve dokümantasyon sağlığı için pratik Markdown çıktıları üretir. Varsayılan olarak deterministik yerel analiz kullanır ve harici AI API gerektirmez.
+## Türkçe
 
-## Neden Var?
+RepoLens, kod tabanını yerel makinenizde analiz eder ve mimari, modüller, onboarding, bağımlılık haritası ve dokümantasyon sağlığı için pratik Markdown çıktıları üretir. Varsayılan olarak deterministik yerel analiz kullanır ve harici AI API gerektirmez.
+
+### Neden Var?
 
 Yazılım dokümantasyonu çoğu zaman koddan koptuğu için eskir. RepoLens, geliştiricilerin tanımadıkları bir depoyu hızlıca anlamasına ve bakım yapanların dokümantasyonu mevcut kaynak ağacına göre düzenli şekilde yenilemesine yardımcı olur.
 
-## Kimler İçin?
+### Kimler İçin?
 
 - Yeni bir projeye katılan geliştiriciler
 - Hafif mimari ve modül dokümantasyonu isteyen bakımcılar
 - Özel depolar için local-first araçlara ihtiyaç duyan ekipler
 - Barındırılan servis kullanmadan dokümantasyon üretmek isteyen açık kaynak projeleri
 
-## Temel Özellikler
+### Temel Özellikler
 
 - Yapılandırılabilir include/exclude kurallarıyla yerel depo taraması
 - Node/JavaScript/TypeScript, Python, Go, Rust ve genel depo algılama
@@ -29,7 +34,7 @@ Yazılım dokümantasyonu çoğu zaman koddan koptuğu için eskir. RepoLens, ge
 - Eski dosya referansları ve package scriptleri için dokümantasyon sağlık kontrolü
 - Gelecekteki AI entegrasyonları için opsiyonel provider soyutlaması, varsayılan olarak kapalı
 
-## Kaynaktan Hızlı Başlangıç
+### Kaynaktan Hızlı Başlangıç
 
 RepoLens henüz npm üzerinde yayınlanmadı. Kaynaktan kullanın:
 
@@ -52,7 +57,7 @@ Dokümantasyon üretin:
 pnpm dev -- scan
 ```
 
-## CLI Kullanımı
+### CLI Kullanımı
 
 ```bash
 pnpm dev -- init
@@ -64,7 +69,7 @@ pnpm dev -- scan --out docs/repolens
 
 Derlendiğinde paket `./dist/cli.js` üzerinden `repolens` binary girdisini sağlar.
 
-## Üretilen Dokümantasyon
+### Üretilen Dokümantasyon
 
 `scan` beş Markdown dosyası yazar:
 
@@ -76,7 +81,7 @@ Derlendiğinde paket `./dist/cli.js` üzerinden `repolens` binary girdisini sağ
 
 Üretilen dokümanlar temkinli dil kullanır, kanıt dosyalarını listeler ve uygun yerlerde Mermaid diyagramları içerir.
 
-## Yapılandırma
+### Yapılandırma
 
 `repolens init`, `.repolensrc.json` dosyasını oluşturur:
 
@@ -94,11 +99,11 @@ Derlendiğinde paket `./dist/cli.js` üzerinden `repolens` binary girdisini sağ
 }
 ```
 
-## Gizlilik ve Local-First Model
+### Gizlilik ve Local-First Model
 
 RepoLens dosyaları yerel depodan okur ve Markdown çıktıları yerel olarak yazar. MVP kaynak kodunu harici servislere göndermez ve varsayılan olarak AI provider çağırmaz.
 
-## Desteklenen Proje Türleri
+### Desteklenen Proje Türleri
 
 - Node.js, TypeScript ve JavaScript
 - Python
@@ -108,14 +113,14 @@ RepoLens dosyaları yerel depodan okur ve Markdown çıktıları yerel olarak ya
 
 Algılama statik ve hafiftir. Amaç faydalı olmak; tam derleyici veya language server davranışı sağlamak değildir.
 
-## Sınırlamalar
+### Sınırlamalar
 
 - Import analizi hafiftir ve karmaşık dinamik davranışları kaçırabilir.
 - Go ve Rust bağımlılık algılama MVP içinde temeldir.
 - Üretilen özetler dosya yapısı, isimler ve importlardan çıkarım yapar; özel iş bağlamını bilemez.
 - Web paneli, cloud sync, barındırılan servis, npm yayını veya harici AI entegrasyonu yoktur.
 
-## Dokümantasyon
+### Dokümantasyon
 
 - [Başlangıç](docs/getting-started.md)
 - [CLI referansı](docs/cli.md)
@@ -126,39 +131,36 @@ Algılama statik ve hafiftir. Amaç faydalı olmak; tam derleyici veya language 
 - [Yol haritası](docs/roadmap.md)
 - [SSS](docs/faq.md)
 
-## Katkı
+### Katkı
 
 Bkz. [CONTRIBUTING.md](CONTRIBUTING.md). Değişiklikleri local-first, deterministik ve testlerle desteklenmiş tutun.
 
-## Lisans
+### Lisans
 
 MIT. Bkz. [LICENSE](LICENSE).
 
-## Yazar
+### Yazar
 
 𝓐.𝓒.𝓑
 
-</details>
+---
 
-<details>
-<summary><strong>English</strong></summary>
+## English
 
-RepoLens is a local-first CLI that turns repositories into living documentation.
+RepoLens analyzes a codebase on your machine and generates practical Markdown documentation for architecture, modules, onboarding, dependency maps, and documentation health. By default it uses deterministic local analysis and does not require external AI APIs.
 
-It analyzes a codebase on your machine and generates practical Markdown documentation for architecture, modules, onboarding, dependency maps, and documentation health. By default it uses deterministic local analysis and does not require external AI APIs.
-
-## Why RepoLens Exists
+### Why RepoLens Exists
 
 Software documentation often goes stale because it is separated from the code it describes. RepoLens helps developers quickly understand an unfamiliar repository and gives maintainers a repeatable way to refresh documentation from the current source tree.
 
-## Who It Is For
+### Who It Is For
 
 - Developers onboarding to an unfamiliar project
 - Maintainers who want lightweight architecture and module docs
 - Teams that need local-first tooling for private repositories
 - Open-source projects that want generated docs without a hosted service
 
-## Key Features
+### Key Features
 
 - Local repository scanning with configurable include/exclude rules
 - Project type detection for Node/JavaScript/TypeScript, Python, Go, Rust, and generic repositories
@@ -167,7 +169,7 @@ Software documentation often goes stale because it is separated from the code it
 - Documentation freshness checks for stale file references and package scripts
 - Optional provider abstraction for future AI integrations, disabled by default
 
-## Quick Start From Source
+### Quick Start From Source
 
 RepoLens is not published to npm yet. Use it from source:
 
@@ -190,7 +192,7 @@ Generate documentation:
 pnpm dev -- scan
 ```
 
-## CLI Usage
+### CLI Usage
 
 ```bash
 pnpm dev -- init
@@ -202,7 +204,7 @@ pnpm dev -- scan --out docs/repolens
 
 When built, the package exposes the `repolens` binary at `./dist/cli.js`.
 
-## Generated Documentation
+### Generated Documentation
 
 `scan` writes five Markdown files:
 
@@ -214,7 +216,7 @@ When built, the package exposes the `repolens` binary at `./dist/cli.js`.
 
 The generated docs use cautious language, cite evidence files, and include Mermaid diagrams where useful.
 
-## Configuration
+### Configuration
 
 `repolens init` creates `.repolensrc.json`:
 
@@ -232,11 +234,11 @@ The generated docs use cautious language, cite evidence files, and include Merma
 }
 ```
 
-## Privacy and Local-First Model
+### Privacy and Local-First Model
 
 RepoLens reads files from the local repository and writes Markdown output locally. The MVP does not send source code to external services and does not call AI providers by default.
 
-## Supported Project Types
+### Supported Project Types
 
 - Node.js, TypeScript, and JavaScript
 - Python
@@ -246,14 +248,14 @@ RepoLens reads files from the local repository and writes Markdown output locall
 
 Detection is static and lightweight. It is designed to be useful, not a full compiler or language server.
 
-## Limitations
+### Limitations
 
 - Import parsing is lightweight and may miss complex dynamic behavior.
 - Go and Rust dependency detection is basic in the MVP.
 - Generated summaries infer responsibility from file structure, names, and imports; they do not understand private business context.
 - No web dashboard, cloud sync, hosted service, npm publication, or external AI integration is included.
 
-## Documentation
+### Documentation
 
 - [Getting started](docs/getting-started.md)
 - [CLI reference](docs/cli.md)
@@ -264,16 +266,14 @@ Detection is static and lightweight. It is designed to be useful, not a full com
 - [Roadmap](docs/roadmap.md)
 - [FAQ](docs/faq.md)
 
-## Contributing
+### Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Keep changes local-first, deterministic, and covered by tests.
 
-## License
+### License
 
 MIT. See [LICENSE](LICENSE).
 
-## Author
+### Author
 
 𝓐.𝓒.𝓑
-
-</details>

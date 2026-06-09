@@ -1,9 +1,12 @@
 # FAQ / SSS
 
-Switch language on this page by opening the section you want.
+<p align="center">
+  <a href="#english">English</a> | <a href="#türkçe">Türkçe</a>
+</p>
 
-<details open>
-<summary><strong>English</strong></summary>
+---
+
+## English
 
 ## Is RepoLens published to npm?
 
@@ -29,10 +32,9 @@ No. RepoLens infers structure from files, names, scripts, imports, and documenta
 
 The MVP detects npm, pnpm, yarn, pip requirements, pyproject-based Python projects, Go modules, and Cargo.
 
-</details>
+---
 
-<details>
-<summary><strong>Türkçe</strong></summary>
+## Türkçe
 
 ## RepoLens npm üzerinde yayınlandı mı?
 
@@ -57,5 +59,3 @@ Hayır. RepoLens dosyalardan, isimlerden, scriptlerden, importlardan ve doküman
 ## Hangi paket yöneticileri algılanır?
 
 MVP npm, pnpm, yarn, pip requirements, pyproject tabanlı Python projeleri, Go modules ve Cargo algılar.
-
-</details>

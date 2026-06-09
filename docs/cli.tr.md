@@ -1,9 +1,12 @@
 # CLI Referansı / CLI Reference
 
-İstediğiniz bölümü açarak bu sayfadan ayrılmadan dil değiştirebilirsiniz.
+<p align="center">
+  <a href="#türkçe">Türkçe</a> | <a href="#english">English</a>
+</p>
 
-<details open>
-<summary><strong>Türkçe</strong></summary>
+---
+
+## Türkçe
 
 RepoLens dört komut sağlar:
 
@@ -24,10 +27,9 @@ pnpm dev -- scan --out docs/repolens
 
 `pnpm build` sonrasında derlenmiş CLI giriş noktası `dist/cli.js` dosyasıdır. Paket bin alanı `repolens` olarak yapılandırılmıştır.
 
-</details>
+---
 
-<details>
-<summary><strong>English</strong></summary>
+## English
 
 RepoLens exposes four commands:
 
@@ -47,5 +49,3 @@ pnpm dev -- scan --out docs/repolens
 ```
 
 After `pnpm build`, the compiled CLI entry point is `dist/cli.js`. The package bin is configured as `repolens`.
-
-</details>

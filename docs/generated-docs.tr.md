@@ -1,9 +1,12 @@
 # Üretilen Dokümanlar / Generated Docs
 
-İstediğiniz bölümü açarak bu sayfadan ayrılmadan dil değiştirebilirsiniz.
+<p align="center">
+  <a href="#türkçe">Türkçe</a> | <a href="#english">English</a>
+</p>
 
-<details open>
-<summary><strong>Türkçe</strong></summary>
+---
+
+## Türkçe
 
 `scan` beş Markdown dosyası yazar:
 
@@ -15,10 +18,9 @@
 
 Üretilen dokümanlar statik kaynak kanıtına dayanır. RepoLens temkinli dil kullanır ve kanıt dosyalarını listeler; çünkü kodda görünmeyen iş niyetini bilemez.
 
-</details>
+---
 
-<details>
-<summary><strong>English</strong></summary>
+## English
 
 `scan` writes five Markdown files:
 
@@ -29,5 +31,3 @@
 - `DOCS_HEALTH.md`: documentation files found, broken references, documented scripts that do not exist, missing recommended docs, and suggested fixes.
 
 Generated docs are based on static source evidence. RepoLens uses cautious language and lists evidence files because it cannot know business intent that is not visible in code.
-
-</details>

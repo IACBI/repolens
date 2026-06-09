@@ -1,9 +1,12 @@
 # Architecture / Mimari
 
-Switch language on this page by opening the section you want.
+<p align="center">
+  <a href="#english">English</a> | <a href="#türkçe">Türkçe</a>
+</p>
 
-<details open>
-<summary><strong>English</strong></summary>
+---
+
+## English
 
 RepoLens separates scanning, analysis, and Markdown generation.
 
@@ -27,10 +30,9 @@ RepoLens separates scanning, analysis, and Markdown generation.
 4. Documentation health checks inspect configured Markdown files.
 5. Generators write deterministic Markdown output.
 
-</details>
+---
 
-<details>
-<summary><strong>Türkçe</strong></summary>
+## Türkçe
 
 RepoLens tarama, analiz ve Markdown üretimini ayrı tutar.
 
@@ -53,5 +55,3 @@ RepoLens tarama, analiz ve Markdown üretimini ayrı tutar.
 3. Analyzer proje türünü, scriptleri, giriş noktalarını, modülleri ve bağımlılıkları algılar.
 4. Dokümantasyon sağlık kontrolleri yapılandırılmış Markdown dosyalarını inceler.
 5. Generatorlar deterministik Markdown çıktısı yazar.
-
-</details>
