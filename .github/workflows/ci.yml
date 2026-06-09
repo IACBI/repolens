@@ -28,10 +28,12 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Typecheck if configured
-        run: node -e "const { scripts = {} } = require('./package.json'); if (scripts.typecheck) require('child_process').execSync('pnpm typecheck', { stdio: 'inherit' }); else console.log('No typecheck script configured; skipping.');"
+        run: |
+          node -e "const { scripts = {} } = require('./package.json'); if (scripts.typecheck) require('child_process').execSync('pnpm typecheck', { stdio: 'inherit' }); else console.log('No typecheck script configured; skipping.');"
 
       - name: Lint if configured
-        run: node -e "const { scripts = {} } = require('./package.json'); if (scripts.lint) require('child_process').execSync('pnpm lint', { stdio: 'inherit' }); else console.log('No lint script configured; skipping.');"
+        run: |
+          node -e "const { scripts = {} } = require('./package.json'); if (scripts.lint) require('child_process').execSync('pnpm lint', { stdio: 'inherit' }); else console.log('No lint script configured; skipping.');"
 
       - name: Build
         run: pnpm build
