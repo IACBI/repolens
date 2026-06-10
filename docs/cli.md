@@ -12,8 +12,10 @@ RepoLens exposes four commands:
 
 - `init`: creates `.repolensrc.json` if it does not exist.
 - `summary`: prints scanned files, languages, package managers, entry points, modules, and docs-health count.
-- `scan`: writes generated Markdown documentation.
+- `scan`: writes generated Markdown documentation. `--out <dir>` overrides the output directory.
 - `check-docs`: checks existing docs for stale file references and missing package scripts.
+  - `--strict`: exits with a non-zero code when warnings are found (useful as a CI gate).
+  - `--json`: prints the documentation health report as JSON.
 
 ## Usage
 
@@ -21,6 +23,8 @@ RepoLens exposes four commands:
 pnpm dev -- init
 pnpm dev -- summary
 pnpm dev -- check-docs
+pnpm dev -- check-docs --strict
+pnpm dev -- check-docs --json
 pnpm dev -- scan
 pnpm dev -- scan --out docs/repolens
 ```
@@ -35,8 +39,10 @@ RepoLens dört komut sağlar:
 
 - `init`: yoksa `.repolensrc.json` oluşturur.
 - `summary`: taranan dosyaları, dilleri, paket yöneticilerini, giriş noktalarını, modülleri ve docs-health sayısını yazdırır.
-- `scan`: üretilen Markdown dokümantasyonu yazar.
+- `scan`: üretilen Markdown dokümantasyonu yazar. `--out <dizin>` çıktı dizinini değiştirir.
 - `check-docs`: mevcut dokümanlarda eski dosya referanslarını ve eksik package scriptlerini kontrol eder.
+  - `--strict`: uyarı bulunduğunda sıfır dışı çıkış koduyla sonlanır (CI kapısı olarak kullanışlıdır).
+  - `--json`: dokümantasyon sağlık raporunu JSON olarak yazdırır.
 
 ## Kullanım
 
@@ -44,6 +50,8 @@ RepoLens dört komut sağlar:
 pnpm dev -- init
 pnpm dev -- summary
 pnpm dev -- check-docs
+pnpm dev -- check-docs --strict
+pnpm dev -- check-docs --json
 pnpm dev -- scan
 pnpm dev -- scan --out docs/repolens
 ```

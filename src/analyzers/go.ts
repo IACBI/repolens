@@ -1,3 +1,7 @@
+export function parseGoModulePath(content: string): string | undefined {
+  return content.match(/^module\s+(\S+)/m)?.[1];
+}
+
 export function parseGoImports(content: string): string[] {
   const imports = new Set<string>();
 

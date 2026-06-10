@@ -16,22 +16,39 @@ import type {
 } from "../types/index.js";
 import { analyzeDocsHealth, loadDocumentationFiles } from "../docs/docsHealth.js";
 import { summarizeLanguages } from "./generic.js";
-import { parseGoImports } from "./go.js";
+import { parseGoImports, parseGoModulePath } from "./go.js";
 import { packageNameFromSpecifier, parseJavaScriptImports } from "./javascript.js";
 import { parsePythonImports, pythonImportRoot } from "./python.js";
 import { parseRustUses } from "./rust.js";
+import { loadTsconfigAliases, resolveAliasCandidates, type TsPathAlias } from "./tsconfigPaths.js";
+import { detectWorkspacePackages, type WorkspacePackage } from "./workspace.js";
 import { normalizeRelativePath, pathSegments, trimExtension } from "../utils/path.js";
 
 const MODULE_ROOTS = new Set(["src", "apps", "packages", "services", "lib", "components", "pages", "app"]);
 const BOUNDARY_ROOTS = new Set(["apps", "packages", "services"]);
 
+interface DependencyContext {
+  goModulePath?: string;
+  workspacePackages: WorkspacePackage[];
+  tsAliases: TsPathAlias[];
+}
+
 export async function analyzeRepository(root: string, config: RepoLensConfig): Promise<RepositoryAnalysis> {
   const absoluteRoot = path.resolve(root);
-  const files = await scanFiles(absoluteRoot, config);
-  const documentationFiles = await loadDocumentationFiles(absoluteRoot, config);
+  const scanConfig = excludeOutputDir(absoluteRoot, config);
+  const files = await scanFiles(absoluteRoot, scanConfig);
+  const documentationFiles = await loadDocumentationFiles(absoluteRoot, scanConfig);
   const packageScripts = getPackageScripts(files);
   const modules = detectModules(files);
-  const { edges, externalDependencies } = analyzeDependencies(files, modules);
+  const [workspacePackages, tsAliases] = await Promise.all([
+    detectWorkspacePackages(absoluteRoot),
+    loadTsconfigAliases(absoluteRoot)
+  ]);
+  const { edges, externalDependencies } = analyzeDependencies(files, modules, {
+    goModulePath: detectGoModulePath(files),
+    workspacePackages,
+    tsAliases
+  });
   attachDependenciesToModules(modules, edges, externalDependencies);
 
   const docsHealth = await analyzeDocsHealth(absoluteRoot, documentationFiles, packageScripts);
@@ -51,6 +68,19 @@ export async function analyzeRepository(root: string, config: RepoLensConfig): P
     externalDependencies,
     docsHealth
   };
+}
+
+function excludeOutputDir(root: string, config: RepoLensConfig): RepoLensConfig {
+  const relativeOutputDir = path.isAbsolute(config.outputDir)
+    ? path.relative(root, config.outputDir)
+    : config.outputDir;
+  const normalized = normalizeRelativePath(relativeOutputDir).replace(/\/$/, "");
+
+  if (!normalized || normalized === "." || normalized.startsWith("..") || config.exclude.includes(normalized)) {
+    return config;
+  }
+
+  return { ...config, exclude: [...config.exclude, normalized] };
 }
 
 function getPackageScripts(files: ScannedFile[]): PackageScript[] {
@@ -73,28 +103,30 @@ function getPackageScripts(files: ScannedFile[]): PackageScript[] {
 async function detectProjectTypes(root: string, files: ScannedFile[]): Promise<ProjectType[]> {
   const filePaths = new Set(files.map((file) => file.path));
   const types = new Set<ProjectType>();
+  const hasManifest = async (name: string): Promise<boolean> =>
+    filePaths.has(name) || (await exists(path.join(root, name)));
 
-  if (filePaths.has("package.json") || files.some((file) => file.language === "typescript" || file.language === "javascript")) {
+  if ((await hasManifest("package.json")) || files.some((file) => file.language === "typescript" || file.language === "javascript")) {
     types.add("node");
   }
 
   if (
-    filePaths.has("requirements.txt") ||
-    filePaths.has("pyproject.toml") ||
+    (await hasManifest("requirements.txt")) ||
+    (await hasManifest("pyproject.toml")) ||
     files.some((file) => file.language === "python")
   ) {
     types.add("python");
   }
 
-  if (filePaths.has("go.mod") || files.some((file) => file.language === "go")) {
+  if ((await hasManifest("go.mod")) || files.some((file) => file.language === "go")) {
     types.add("go");
   }
 
-  if (filePaths.has("Cargo.toml") || files.some((file) => file.language === "rust")) {
+  if ((await hasManifest("Cargo.toml")) || files.some((file) => file.language === "rust")) {
     types.add("rust");
   }
 
-  if (types.size === 0 && !(await hasAnyManifest(root))) {
+  if (types.size === 0) {
     types.add("generic");
   }
 
@@ -130,7 +162,11 @@ async function detectEntryPoints(root: string, files: ScannedFile[], packageScri
   const knownFiles = [
     "src/index.ts",
     "src/main.ts",
+    "src/index.js",
+    "src/main.js",
+    "index.ts",
     "index.js",
+    "main.go",
     "main.py",
     "app.py",
     "src/main.rs"
@@ -186,7 +222,8 @@ function detectModules(files: ScannedFile[]): ModuleInfo[] {
 
 function analyzeDependencies(
   files: ScannedFile[],
-  modules: ModuleInfo[]
+  modules: ModuleInfo[],
+  context: DependencyContext
 ): { edges: DependencyEdge[]; externalDependencies: ExternalDependency[] } {
   const edgeMap = new Map<string, DependencyEdge>();
   const externalMap = new Map<string, ExternalDependency>();
@@ -199,13 +236,13 @@ function analyzeDependencies(
 
     const imports = importsForFile(file);
     for (const specifier of imports) {
-      const internalTarget = resolveInternalTarget(file.path, specifier, modules);
+      const internalTarget = resolveInternalTarget(file.path, specifier, modules, context);
       if (internalTarget && internalTarget.path !== fromModule.path) {
         addEdge(edgeMap, fromModule.path, internalTarget.path, "internal", file.path);
         continue;
       }
 
-      const externalName = externalNameForSpecifier(file.language, specifier, modules);
+      const externalName = externalNameForSpecifier(file.language, specifier, modules, context);
       if (externalName) {
         addEdge(edgeMap, fromModule.path, externalName, "external", file.path);
         addExternalDependency(externalMap, externalName, fromModule.path, file.path);
@@ -261,15 +298,15 @@ function modulePathForFile(filePath: string): string | undefined {
 
 function moduleForPath(filePath: string, modules: ModuleInfo[]): ModuleInfo | undefined {
   const normalized = normalizeRelativePath(filePath);
-  const detectedModulePath = modulePathForFile(normalized);
-  const detectedModule = modules.find((moduleInfo) => moduleInfo.path === detectedModulePath);
-  if (detectedModule) {
-    return detectedModule;
-  }
-
-  return [...modules]
+  const longestPrefixMatch = [...modules]
     .sort((a, b) => b.path.length - a.path.length)
     .find((moduleInfo) => normalized === moduleInfo.path || normalized.startsWith(`${moduleInfo.path}/`));
+  if (longestPrefixMatch) {
+    return longestPrefixMatch;
+  }
+
+  const detectedModulePath = modulePathForFile(normalized);
+  return modules.find((moduleInfo) => moduleInfo.path === detectedModulePath);
 }
 
 function moduleNameFromPath(modulePath: string): string {
@@ -388,10 +425,26 @@ function importsForFile(file: ScannedFile): string[] {
   return [];
 }
 
-function resolveInternalTarget(filePath: string, specifier: string, modules: ModuleInfo[]): ModuleInfo | undefined {
+function resolveInternalTarget(
+  filePath: string,
+  specifier: string,
+  modules: ModuleInfo[],
+  context: DependencyContext
+): ModuleInfo | undefined {
   if (specifier.startsWith(".")) {
     const resolved = normalizeRelativePath(path.posix.normalize(`${path.posix.dirname(filePath)}/${specifier}`));
     return moduleForPath(resolved, modules) ?? moduleForPath(trimExtension(resolved), modules);
+  }
+
+  const aliasCandidates = resolveAliasCandidates(specifier, context.tsAliases);
+  if (aliasCandidates) {
+    for (const candidate of aliasCandidates) {
+      const target = moduleForPath(candidate, modules) ?? moduleForPath(trimExtension(candidate), modules);
+      if (target) {
+        return target;
+      }
+    }
+    return undefined;
   }
 
   if (specifier.startsWith("@/")) {
@@ -402,20 +455,48 @@ function resolveInternalTarget(filePath: string, specifier: string, modules: Mod
     return moduleForPath(specifier, modules);
   }
 
-  if (specifier.startsWith(".") || specifier.startsWith("crate::") || specifier.startsWith("self::") || specifier.startsWith("super::")) {
+  if (specifier.startsWith("crate::")) {
+    const targetName = specifier.slice("crate::".length).split("::")[0];
+    return modules.find((moduleInfo) => moduleInfo.name === targetName) ?? moduleForPath(filePath, modules);
+  }
+
+  if (specifier.startsWith("self::") || specifier.startsWith("super::")) {
     return moduleForPath(filePath, modules);
+  }
+
+  const workspaceTarget = workspacePackageForSpecifier(specifier, context.workspacePackages);
+  if (workspaceTarget) {
+    return moduleForPath(workspaceTarget.dir, modules);
+  }
+
+  if (context.goModulePath && isGoModuleInternal(specifier, context.goModulePath)) {
+    const internalPath = specifier.slice(context.goModulePath.length).replace(/^\//, "");
+    return internalPath ? moduleForPath(internalPath, modules) : undefined;
   }
 
   const importRoot = specifier.split(/[./:]/)[0];
   return modules.find((moduleInfo) => moduleInfo.name === importRoot);
 }
 
-function externalNameForSpecifier(language: ScannedFile["language"], specifier: string, modules: ModuleInfo[]): string | undefined {
+function externalNameForSpecifier(
+  language: ScannedFile["language"],
+  specifier: string,
+  modules: ModuleInfo[],
+  context: DependencyContext
+): string | undefined {
   if (specifier.startsWith(".") || specifier.startsWith("@/") || specifier.startsWith("src/")) {
     return undefined;
   }
 
+  if (resolveAliasCandidates(specifier, context.tsAliases)) {
+    return undefined;
+  }
+
   if (language === "typescript" || language === "javascript") {
+    if (workspacePackageForSpecifier(specifier, context.workspacePackages)) {
+      return undefined;
+    }
+
     return packageNameFromSpecifier(specifier);
   }
 
@@ -425,6 +506,10 @@ function externalNameForSpecifier(language: ScannedFile["language"], specifier: 
   }
 
   if (language === "go") {
+    if (context.goModulePath && isGoModuleInternal(specifier, context.goModulePath)) {
+      return undefined;
+    }
+
     return specifier.includes(".") ? specifier : undefined;
   }
 
@@ -437,6 +522,27 @@ function externalNameForSpecifier(language: ScannedFile["language"], specifier: 
   }
 
   return undefined;
+}
+
+function detectGoModulePath(files: ScannedFile[]): string | undefined {
+  const goMod = files.find((file) => file.path === "go.mod");
+  return goMod ? parseGoModulePath(goMod.content) : undefined;
+}
+
+function isGoModuleInternal(specifier: string, goModulePath: string): boolean {
+  return specifier === goModulePath || specifier.startsWith(`${goModulePath}/`);
+}
+
+function workspacePackageForSpecifier(
+  specifier: string,
+  workspacePackages: WorkspacePackage[]
+): WorkspacePackage | undefined {
+  if (workspacePackages.length === 0) {
+    return undefined;
+  }
+
+  const packageName = packageNameFromSpecifier(specifier);
+  return workspacePackages.find((workspacePackage) => workspacePackage.name === packageName);
 }
 
 function addEdge(
@@ -474,16 +580,6 @@ function addExternalDependency(
   dependencies.set(name, { name, usedBy: [usedBy], evidence: [evidence] });
 }
 
-async function hasAnyManifest(root: string): Promise<boolean> {
-  const manifestNames = ["package.json", "requirements.txt", "pyproject.toml", "go.mod", "Cargo.toml"];
-  for (const manifest of manifestNames) {
-    if (await exists(path.join(root, manifest))) {
-      return true;
-    }
-  }
-  return false;
-}
-
 async function exists(filePath: string): Promise<boolean> {
   try {
     await access(filePath);
@@ -496,7 +592,9 @@ async function exists(filePath: string): Promise<boolean> {
 function knownEntryLabel(filePath: string): string {
   if (filePath.endsWith(".py")) return "Python application entry point";
   if (filePath.endsWith(".rs")) return "Rust application entry point";
+  if (filePath.endsWith(".go")) return "Go application entry point";
   if (filePath.includes("index")) return "Node/JavaScript index entry point";
+  if (filePath.includes("main")) return "Node/JavaScript main entry point";
   return "Application entry point";
 }
 

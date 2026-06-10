@@ -3,6 +3,8 @@ export { loadConfig, writeDefaultConfig } from "./config/loadConfig.js";
 export { analyzeRepository } from "./analyzers/repository.js";
 export { parseJavaScriptImports } from "./analyzers/javascript.js";
 export { parsePythonImports } from "./analyzers/python.js";
+export { detectWorkspacePackages, type WorkspacePackage } from "./analyzers/workspace.js";
+export { loadTsconfigAliases, resolveAliasCandidates, type TsPathAlias } from "./analyzers/tsconfigPaths.js";
 export { generateDocs } from "./docs/generators/index.js";
 export { writeGeneratedDocs } from "./docs/writeDocs.js";
 export { LocalHeuristicProvider, NullProvider, selectLlmProvider } from "./ai/index.js";

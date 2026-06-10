@@ -1,4 +1,5 @@
 import type { RepositoryAnalysis } from "../../types/index.js";
+import { dependencyDegree } from "../../graph/dependencyGraph.js";
 import { bulletList, codeBlock, formatEvidence, heading, markdownTable, safeMermaidId, sortedUnique } from "../markdown.js";
 
 export function generateDependencyMapDoc(analysis: RepositoryAnalysis): string {
@@ -85,19 +86,13 @@ function mermaidGraph(analysis: RepositoryAnalysis): string {
 }
 
 function couplingHotspots(analysis: RepositoryAnalysis): string[] {
-  const incoming = new Map<string, number>();
-  const outgoing = new Map<string, number>();
-
-  for (const edge of analysis.dependencyEdges.filter((item) => item.kind === "internal")) {
-    outgoing.set(edge.from, (outgoing.get(edge.from) ?? 0) + 1);
-    incoming.set(edge.to, (incoming.get(edge.to) ?? 0) + 1);
-  }
+  const degree = dependencyDegree(analysis.dependencyEdges.filter((item) => item.kind === "internal"));
 
   const hotspots = [...analysis.modules]
     .map((moduleInfo) => ({
       moduleInfo,
-      incoming: incoming.get(moduleInfo.path) ?? 0,
-      outgoing: outgoing.get(moduleInfo.path) ?? 0
+      incoming: degree.get(moduleInfo.path)?.incoming ?? 0,
+      outgoing: degree.get(moduleInfo.path)?.outgoing ?? 0
     }))
     .filter((item) => item.incoming + item.outgoing > 1)
     .sort((a, b) => b.incoming + b.outgoing - (a.incoming + a.outgoing))

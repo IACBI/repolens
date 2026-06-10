@@ -43,7 +43,7 @@ export function looksTextLike(filePath: string): boolean {
   }
 
   const baseName = path.posix.basename(normalizeRelativePath(filePath)).toLowerCase();
-  return ["dockerfile", "makefile", "license"].includes(baseName);
+  return ["dockerfile", "makefile", "license", "go.mod", "go.sum"].includes(baseName);
 }
 
 export function isProbablyBinary(buffer: Buffer): boolean {

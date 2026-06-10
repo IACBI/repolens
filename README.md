@@ -27,11 +27,14 @@ Software documentation often goes stale because it is separated from the code it
 
 ### Key Features
 
-- Local repository scanning with configurable include/exclude rules
+- Local repository scanning with configurable include/exclude rules and `.gitignore` support
 - Project type detection for Node/JavaScript/TypeScript, Python, Go, Rust, and generic repositories
 - Package manager, entry point, module, and package script detection
+- Monorepo awareness: pnpm/npm/yarn workspace packages are treated as internal dependencies
+- `tsconfig.json` path alias resolution (`compilerOptions.paths`) for import mapping
+- Go module path (`go.mod`) awareness for internal vs. external import classification
 - Markdown output with Mermaid diagrams
-- Documentation freshness checks for stale file references and package scripts
+- Documentation freshness checks for stale file references and package scripts, with `--strict` and `--json` for CI
 - Optional provider abstraction for future AI integrations, disabled by default
 
 ### Quick Start From Source
@@ -63,9 +66,13 @@ pnpm dev -- scan
 pnpm dev -- init
 pnpm dev -- summary
 pnpm dev -- check-docs
+pnpm dev -- check-docs --strict
+pnpm dev -- check-docs --json
 pnpm dev -- scan
 pnpm dev -- scan --out docs/repolens
 ```
+
+`check-docs --strict` exits with a non-zero code when warnings are found, which makes it usable as a CI gate. `check-docs --json` prints the report as JSON.
 
 When built, the package exposes the `repolens` binary at `./dist/cli.js`.
 
@@ -116,7 +123,7 @@ Detection is static and lightweight. It is designed to be useful, not a full com
 ### Limitations
 
 - Import parsing is lightweight and may miss complex dynamic behavior.
-- Go and Rust dependency detection is basic in the MVP.
+- Only the repository-root `.gitignore` and `tsconfig.json` are read; nested ignore files, negation patterns, and `extends` chains are not followed.
 - Generated summaries infer responsibility from file structure, names, and imports; they do not understand private business context.
 - No web dashboard, cloud sync, hosted service, npm publication, or external AI integration is included.
 
@@ -162,11 +169,14 @@ Yazılım dokümantasyonu çoğu zaman koddan koptuğu için eskir. RepoLens, ge
 
 ### Temel Özellikler
 
-- Yapılandırılabilir include/exclude kurallarıyla yerel depo taraması
+- Yapılandırılabilir include/exclude kuralları ve `.gitignore` desteğiyle yerel depo taraması
 - Node/JavaScript/TypeScript, Python, Go, Rust ve genel depo algılama
 - Paket yöneticisi, giriş noktası, modül ve package script algılama
+- Monorepo farkındalığı: pnpm/npm/yarn workspace paketleri iç bağımlılık olarak işlenir
+- Import eşlemesi için `tsconfig.json` path alias çözümlemesi (`compilerOptions.paths`)
+- İç/dış import ayrımı için Go modül yolu (`go.mod`) farkındalığı
 - Mermaid diyagramlı Markdown çıktılar
-- Eski dosya referansları ve package scriptleri için dokümantasyon sağlık kontrolü
+- Eski dosya referansları ve package scriptleri için dokümantasyon sağlık kontrolü; CI için `--strict` ve `--json`
 - Gelecekteki AI entegrasyonları için opsiyonel provider soyutlaması, varsayılan olarak kapalı
 
 ### Kaynaktan Hızlı Başlangıç
@@ -198,9 +208,13 @@ pnpm dev -- scan
 pnpm dev -- init
 pnpm dev -- summary
 pnpm dev -- check-docs
+pnpm dev -- check-docs --strict
+pnpm dev -- check-docs --json
 pnpm dev -- scan
 pnpm dev -- scan --out docs/repolens
 ```
+
+`check-docs --strict`, uyarı bulunduğunda sıfır dışı çıkış koduyla sonlanır; bu sayede CI kapısı olarak kullanılabilir. `check-docs --json` raporu JSON olarak yazdırır.
 
 Derlendiğinde paket `./dist/cli.js` üzerinden `repolens` binary girdisini sağlar.
 
@@ -251,7 +265,7 @@ Algılama statik ve hafiftir. Amaç faydalı olmak; tam derleyici veya language 
 ### Sınırlamalar
 
 - Import analizi hafiftir ve karmaşık dinamik davranışları kaçırabilir.
-- Go ve Rust bağımlılık algılama MVP içinde temeldir.
+- Yalnızca depo kökündeki `.gitignore` ve `tsconfig.json` okunur; iç içe ignore dosyaları, olumsuzlama (`!`) desenleri ve `extends` zincirleri izlenmez.
 - Üretilen özetler dosya yapısı, isimler ve importlardan çıkarım yapar; özel iş bağlamını bilemez.
 - Web paneli, cloud sync, barındırılan servis, npm yayını veya harici AI entegrasyonu yoktur.
 

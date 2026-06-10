@@ -18,12 +18,18 @@ export interface CliIo {
 export function createProgram(io: CliIo = {}): Command {
   const cwd = io.cwd ?? process.cwd();
   const stdout = io.stdout ?? ((message: string) => console.log(message));
+  const stderr = io.stderr ?? ((message: string) => console.error(message));
 
   const program = new Command();
   program
     .name("repolens")
     .description("Analyze a repository and generate living documentation.")
-    .version("0.1.0");
+    .version("0.2.0")
+    .exitOverride()
+    .configureOutput({
+      writeOut: (text) => stdout(text.replace(/\n$/, "")),
+      writeErr: (text) => stderr(text.replace(/\n$/, ""))
+    });
 
   program
     .command("init")
@@ -58,10 +64,19 @@ export function createProgram(io: CliIo = {}): Command {
   program
     .command("check-docs")
     .description("Check whether existing documentation appears stale.")
-    .action(async () => {
+    .option("--strict", "Fail with a non-zero exit code when warnings are found (for CI)")
+    .option("--json", "Print the documentation health report as JSON")
+    .action(async (options: { strict?: boolean; json?: boolean }) => {
       const config = await loadConfig(cwd);
       const analysis = await analyzeRepository(cwd, config);
-      stdout(formatDocsHealthSummary(analysis));
+      stdout(options.json ? JSON.stringify(analysis.docsHealth, null, 2) : formatDocsHealthSummary(analysis));
+
+      if (options.strict) {
+        const warningCount = analysis.docsHealth.issues.filter((issue) => issue.severity === "warning").length;
+        if (warningCount > 0) {
+          throw new Error(`Documentation health check failed: ${warningCount} warning(s) found.`);
+        }
+      }
     });
 
   return program;
@@ -73,6 +88,14 @@ export async function runCli(args: string[], io: CliIo = {}): Promise<void> {
   try {
     await program.parseAsync(args, { from: "user" });
   } catch (error) {
+    const commanderError = error as { code?: string; exitCode?: number };
+    if (typeof commanderError.code === "string" && commanderError.code.startsWith("commander.")) {
+      if (commanderError.exitCode === 0) {
+        return;
+      }
+      throw error;
+    }
+
     stderr((error as Error).message);
     throw error;
   }

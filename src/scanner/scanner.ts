@@ -3,6 +3,7 @@ import path from "node:path";
 import fg from "fast-glob";
 import type { RepoLensConfig, ScannedFile } from "../types/index.js";
 import { detectLanguage, isGeneratedPath, isProbablyBinary, looksTextLike } from "../utils/file.js";
+import { buildIgnoreGlobs, loadGitignoreEntries } from "../utils/ignore.js";
 import { normalizeRelativePath } from "../utils/path.js";
 
 const ROOT_FILE_PATTERNS = [
@@ -33,7 +34,8 @@ const ROOT_FILE_PATTERNS = [
 export async function scanFiles(root: string, config: RepoLensConfig): Promise<ScannedFile[]> {
   const absoluteRoot = path.resolve(root);
   const patterns = buildScanPatterns(config);
-  const ignore = buildIgnorePatterns(config.exclude);
+  const gitignoreEntries = await loadGitignoreEntries(absoluteRoot);
+  const ignore = buildIgnorePatterns([...config.exclude, ...gitignoreEntries]);
   const maxBytes = config.maxFileSizeKb * 1024;
 
   const paths = await fg(patterns, {
@@ -53,7 +55,7 @@ export async function scanFiles(root: string, config: RepoLensConfig): Promise<S
 
     const absolutePath = path.join(absoluteRoot, relative);
     const fileStat = await stat(absolutePath);
-    if (fileStat.size > maxBytes || (!looksTextLike(relative) && fileStat.size > 0)) {
+    if (fileStat.size > maxBytes || !looksTextLike(relative)) {
       continue;
     }
 
@@ -80,6 +82,5 @@ function buildScanPatterns(config: RepoLensConfig): string[] {
 }
 
 function buildIgnorePatterns(exclude: string[]): string[] {
-  const ignored = new Set([".repolens", ...exclude].map((entry) => normalizeRelativePath(entry).replace(/\/$/, "")));
-  return [...ignored].flatMap((entry) => [entry, `${entry}/**`]);
+  return buildIgnoreGlobs([".repolens", ...exclude]);
 }

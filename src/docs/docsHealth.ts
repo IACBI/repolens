@@ -3,6 +3,7 @@ import path from "node:path";
 import fg from "fast-glob";
 import type { DocumentationFile, DocsHealthIssue, DocsHealthReport, PackageScript, RepoLensConfig } from "../types/index.js";
 import { isProbablyBinary } from "../utils/file.js";
+import { buildIgnoreGlobs, loadGitignoreEntries } from "../utils/ignore.js";
 import { normalizeRelativePath } from "../utils/path.js";
 
 const RECOMMENDED_DOCS = ["README.md", "LICENSE", "CONTRIBUTING.md"];
@@ -19,16 +20,19 @@ const PACKAGE_MANAGER_COMMANDS = new Set([
   "remove",
   "run",
   "uninstall",
-  "why"
+  "why",
+  "workspace",
+  "workspaces"
 ]);
 
 export async function loadDocumentationFiles(root: string, config: RepoLensConfig): Promise<DocumentationFile[]> {
+  const gitignoreEntries = await loadGitignoreEntries(root);
   const docs = await fg(config.docs, {
     cwd: root,
     onlyFiles: true,
     dot: false,
     unique: true,
-    ignore: [...config.exclude, ...config.exclude.map((entry) => `${entry}/**`), ".repolens/**"]
+    ignore: buildIgnoreGlobs([".repolens", ...config.exclude, ...gitignoreEntries])
   });
 
   const documentationFiles: DocumentationFile[] = [];
@@ -166,7 +170,7 @@ function cleanReference(reference: string): string {
     .replace(/^<|>$/g, "")
     .split("#")[0]
     .split("?")[0]
-    .replace(/(?<!:)[:#]\d+(?::\d+)?$/, "")
+    .replace(/(?<!:):\d+(?::\d+)?$/, "")
     .replace(/[),.;]+$/g, "");
 }
 
